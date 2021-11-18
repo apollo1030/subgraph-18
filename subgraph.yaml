@@ -1,0 +1,197 @@
+specVersion: 0.0.2
+description: Olympus DAO Subgraph
+repository: https://github.com/SmartDev84/olympus-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  #Staking Contract
+  - kind: ethereum/contract
+    name: OlympusStaking
+    network: fantom
+    source:
+      address: '0x02eE802a7533eae6861Bb18fC49795AA5A68B778'
+      abi: OlympusStaking
+      startBlock: 20770209
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - OlympusStaking
+      abis:
+        - name: OlympusStaking
+          file: ./abis/OlympusStaking.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: StakingHelper
+          file: ./abis/StakingHelper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympus.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: DAIBond
+          file: ./abis/MockOlympusBondDepository.json
+        - name: FRAXBond
+          file: ./abis/MockOlympusBondDepository.json
+      callHandlers:
+        - function: stake(uint256,address)
+          handler: handleStake
+        - function: unstake(uint256,bool)
+          handler: handleUnstake
+      file: ./src/OlympusStaking.ts
+  #Staking ContractHelper
+  - kind: ethereum/contract
+    name: OlympusStakingHelper
+    network: fantom
+    source:
+      address: '0x6F787895d4066587A50BD7Ca39769968A6FD88e1'
+      abi: StakingHelper
+      startBlock: 20770947
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - OlympusStakingHelper
+      abis:
+        - name: OlympusStaking
+          file: ./abis/OlympusStaking.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: StakingHelper
+          file: ./abis/StakingHelper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympus.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: DAIBond
+          file: ./abis/MockOlympusBondDepository.json
+        - name: FRAXBond
+          file: ./abis/MockOlympusBondDepository.json
+      callHandlers:
+        - function: stake(uint256)
+          handler: handleStake
+      file: ./src/OlympusStakingHelper.ts
+  #DAI Bond Contract
+  - kind: ethereum/contract
+    name: DAIBond
+    network: fantom
+    source:
+      address: '0x8A5fd5Efc90e30Ca1d8aB7a9A76E414db568f0d9'
+      abi: DAIBond
+      startBlock: 20771601
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DAIBondDeposit
+      abis:
+        - name: OlympusStaking
+          file: ./abis/OlympusStaking.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: StakingHelper
+          file: ./abis/StakingHelper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympus.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: DAIBond
+          file: ./abis/MockOlympusBondDepository.json
+        - name: FRAXBond
+          file: ./abis/MockOlympusBondDepository.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/DAIBond.ts
+  # FRAX
+  - kind: ethereum/contract
+    name: FRAXBond
+    network: fantom
+    source:
+      address: '0x6c223D52D55C20D5a5CfEe99bc96576242344546'
+      abi: FRAXBond
+      startBlock: 20772043
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - FRAXBond
+      abis:
+        - name: OlympusStaking
+          file: ./abis/OlympusStaking.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: StakingHelper
+          file: ./abis/StakingHelper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympus.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: DAIBond
+          file: ./abis/MockOlympusBondDepository.json
+        - name: FRAXBond
+          file: ./abis/MockOlympusBondDepository.json
+      callHandlers:
+        - function: deposit(uint256,uint256,address)
+          handler: handleDeposit
+        - function: redeem(address,bool)
+          handler: handleRedeem
+      file: ./src/FRAXBond.ts
+  #sOHM
+  - kind: ethereum/contract
+    name: sOlympusERC20
+    network: fantom
+    source:
+      address: '0xBeBdfceEf4E01063DeC707487913e80bc4a6D2F5'
+      abi: sOlympusERC20
+      startBlock: 20769660
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - sOlympusERC20
+      abis:
+        - name: OlympusStaking
+          file: ./abis/OlympusStaking.json
+        - name: OlympusERC20
+          file: ./abis/OlympusERC20.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+        - name: StakingHelper
+          file: ./abis/StakingHelper.json
+        - name: sOlympusERC20
+          file: ./abis/sOlympus.json
+        - name: CirculatingSupply
+          file: ./abis/CirculatingSupply.json
+        - name: DAIBond
+          file: ./abis/MockOlympusBondDepository.json
+        - name: FRAXBond
+          file: ./abis/MockOlympusBondDepository.json
+      callHandlers:
+        - function: rebase(uint256,uint256)
+          handler: rebaseFunction
+      file: ./src/sOlympusERC20.ts
